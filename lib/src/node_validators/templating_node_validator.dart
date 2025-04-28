@@ -1,0 +1,44 @@
+import 'package:meta/meta.dart';
+import 'package:sanitize_dom/src/node_validators/simple_node_validator.dart';
+import 'package:web/web.dart';
+
+base class TemplatingNodeValidator extends SimpleNodeValidator {
+  static const allowedTemplateAttibutes = <String>[
+    'bind',
+    'if',
+    'ref',
+    'repeat',
+    'syntax',
+  ];
+
+  TemplatingNodeValidator()
+      : templateAttributes = Set<String>.from(allowedTemplateAttibutes),
+        super(
+          null,
+          allowedElements: const <String>['TEMPLATE'],
+          allowedAttributes: allowedTemplateAttibutes.map(
+            (attribute) => 'TEMPLATE::$attribute',
+          ),
+        );
+
+  /// @nodoc
+  @internal
+  final Set<String> templateAttributes;
+
+  @override
+  bool allowsAttribute(Element element, String attributeName, String value) {
+    if (super.allowsAttribute(element, attributeName, value)) {
+      return true;
+    }
+
+    if (attributeName == 'template' && value == '') {
+      return true;
+    }
+
+    if (element.getAttribute('template') == '') {
+      return templateAttributes.contains(attributeName);
+    }
+
+    return false;
+  }
+}
