@@ -1,3 +1,10 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+//
+// This code was extracted from the deprecated `dart:html` package of the Dart
+// SDK and migrated to the `web` package.
+
 import 'package:meta/meta.dart';
 import 'package:sanitize_dom/src/url_policy.dart';
 import 'package:web/web.dart';

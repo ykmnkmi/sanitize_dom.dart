@@ -1,12 +1,3 @@
-# sanitize_dom
-
-This package provides useful utilities for working with the DOM validation and
-sanitization.
-
-**Please note:** Some classes and functions in this package were copied from
-the deprecated `dart:html` package of the Dart SDK and are distributed under
-the following license:
-```
 Copyright 2012, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
@@ -33,4 +24,3 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```

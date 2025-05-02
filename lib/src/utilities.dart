@@ -1,3 +1,10 @@
+// Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
+// for details. All rights reserved. Use of this source code is governed by a
+// BSD-style license that can be found in the LICENSE file.
+//
+// This code was extracted from the deprecated `dart:html` package of the Dart
+// SDK and migrated to the `web` package.
+
 import 'dart:js_interop';
 
 import 'package:web/web.dart';
@@ -6,44 +13,44 @@ const bool assertionsEnabled =
     bool.fromEnvironment('dart.web.assertions_enabled');
 
 @JS('Function')
-external JSFunction createFunction1(String argumentName, String body);
+external JSFunction createFunction0(String body);
 
-final JSFunction hasCorruptedAttributesJS = createFunction1('element', '''
-  if (!(element.attributes instanceof NamedNodeMap)) {
+final JSFunction hasCorruptedAttributesJS = createFunction0('''
+  if (!(this.attributes instanceof NamedNodeMap)) {
     return true;
   }
 
   // If something has corrupted the traversal we want to detect
   // these on not only the children (tested below) but on the node itself
   // in case it was bypassed.
-  if (element["id"] == 'lastChild' || element["name"] == 'lastChild' ||
-      element["id"] == 'previousSibling' || element["name"] == 'previousSibling' ||
-      element["id"] == 'children' || element["name"] == 'children') {
+  if (this["id"] == 'lastChild' || this["name"] == 'lastChild' ||
+      this["id"] == 'previousSibling' || this["name"] == 'previousSibling' ||
+      this["id"] == 'children' || this["name"] == 'children') {
     return true;
   }
 
-  var childNodes = element.childNodes;
+  var childNodes = this.childNodes;
 
-  if (element.lastChild && element.lastChild !== childNodes[childNodes.length -1]) {
+  if (this.lastChild && this.lastChild !== childNodes[childNodes.length -1]) {
     return true;
   }
 
   // On Safari, children can apparently be null.
-  if (element.children) {
-    if (!((element.children instanceof HTMLCollection) ||
-          (element.children instanceof NodeList))) {
+  if (this.children) {
+    if (!((this.children instanceof HTMLCollection) ||
+          (this.children instanceof NodeList))) {
       return true;
     }
   }
 
   var length = 0;
 
-  if (element.children) {
-    length = element.children.length;
+  if (this.children) {
+    length = this.children.length;
   }
 
   for (let i = 0; i < length; i++) {
-    var child = element.children[i];
+    var child = this.children[i];
 
     // On IE it seems like we sometimes don't see the clobbered attribute,
     // perhaps as a result of an over-optimization. Also use another route
@@ -66,34 +73,27 @@ final JSFunction hasCorruptedAttributesJS = createFunction1('element', '''
 ///
 /// Those attributes are: attributes, lastChild, children, previousNode and tagName.
 bool hasCorruptedAttributes(Element element) {
-  JSBoolean result = hasCorruptedAttributesJS.callAsFunction(
-    null,
-    element,
-  ) as JSBoolean;
-
+  JSBoolean result =
+      hasCorruptedAttributesJS.callAsFunction(element) as JSBoolean;
   return result.toDart;
 }
 
-final JSFunction hasCorruptedAttributesAdditionalCheckJS =
-    createFunction1('element', '''
-  return !(element.attributes instanceof NamedNodeMap)''');
+final JSFunction hasCorruptedAttributesAdditionalCheckJS = createFunction0('''
+  return !(this.attributes instanceof NamedNodeMap)''');
 
 /// A secondary check for corruption, needed on IE
 bool hasCorruptedAttributesAdditionalCheck(Element element) {
-  JSBoolean result = hasCorruptedAttributesAdditionalCheckJS.callAsFunction(
-    null,
-    element,
-  ) as JSBoolean;
-
+  JSBoolean result = hasCorruptedAttributesAdditionalCheckJS
+      .callAsFunction(element) as JSBoolean;
   return result.toDart;
 }
 
-final JSFunction safeTagNameJS = createFunction1('element', '''
+final JSFunction safeTagNameJS = createFunction0('''
   var result = 'element tag unavailable';
 
   try {
-    if (typeof element.tagName === 'string') {
-      result = element.tagName;
+    if (typeof this.tagName === 'string') {
+      result = this.tagName;
     }
   } catch (error) {}
 
@@ -101,10 +101,6 @@ final JSFunction safeTagNameJS = createFunction1('element', '''
 
 /// A secondary check for corruption, needed on IE
 String safeTagName(Element element) {
-  JSString result = hasCorruptedAttributesAdditionalCheckJS.callAsFunction(
-    null,
-    element,
-  ) as JSString;
-
+  JSString result = safeTagNameJS.callAsFunction(element) as JSString;
   return result.toDart;
 }

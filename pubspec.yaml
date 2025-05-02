@@ -1,6 +1,7 @@
 name: sanitize_dom
-description: An absolute bare-bones web app.
-version: 0.0.1
+description: This package provides useful utilities for working with the DOM
+  validation and sanitization.
+version: 0.0.2
 # repository: https://github.com/ykmnkmi/sanitize_dom.dart
 
 environment:
@@ -15,3 +16,4 @@ dev_dependencies:
   build_runner: ^2.4.14
   build_web_compilers: ^4.1.0
   lints: ^5.1.0
+  test: ^1.25.15

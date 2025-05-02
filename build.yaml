@@ -1,0 +1,21 @@
+targets:
+  $default:
+    builders:
+      build_web_compilers:entrypoint:
+        generate_for:
+          - web/main.dart
+        options:
+          native_null_assertions: false
+        dev_options:
+          compilers:
+            dartdevc:
+        release_options:
+          compilers:
+            dart2js:
+              args:
+                - --enable-asserts
+                - --no-minify
+            dart2wasm:
+              args:
+                - --no-minify
+                - --enable-asserts
