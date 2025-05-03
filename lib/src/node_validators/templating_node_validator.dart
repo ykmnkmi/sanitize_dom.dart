@@ -28,7 +28,6 @@ base class TemplatingNodeValidator extends SimpleNodeValidator {
           ),
         );
 
-  /// @nodoc
   @internal
   final Set<String> templateAttributes;
 

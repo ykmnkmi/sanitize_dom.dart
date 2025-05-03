@@ -15,8 +15,8 @@ base class SimpleNodeValidator implements NodeValidator {
   factory SimpleNodeValidator.allowNavigation(UriPolicy uriPolicy) {
     return SimpleNodeValidator(
       uriPolicy,
-      allowedElements: const ['A', 'FORM'],
-      allowedAttributes: const [
+      allowedElements: const <String>['A', 'FORM'],
+      allowedAttributes: const <String>[
         'A::accesskey',
         'A::coords',
         'A::hreflang',
@@ -33,7 +33,7 @@ base class SimpleNodeValidator implements NodeValidator {
         'FORM::novalidate',
         'FORM::target',
       ],
-      allowedUriAttributes: const ['A::href', 'FORM::action'],
+      allowedUriAttributes: const <String>['A::href', 'FORM::action'],
     );
   }
 
@@ -91,9 +91,9 @@ base class SimpleNodeValidator implements NodeValidator {
     Iterable<String>? allowedAttributes,
     Iterable<String>? allowedUriAttributes,
   }) {
-    this.allowedElements.addAll(allowedElements ?? const <Never>[]);
-    allowedAttributes = allowedAttributes ?? const <Never>[];
-    allowedUriAttributes = allowedUriAttributes ?? const <Never>[];
+    this.allowedElements.addAll(allowedElements ?? const <String>[]);
+    allowedAttributes = allowedAttributes ?? const <String>[];
+    allowedUriAttributes = allowedUriAttributes ?? const <String>[];
 
     Iterable<String> legalAttributes = allowedAttributes.where(
       (allowedAttribute) => !HTML5NodeValidator.uriAttributes.contains(

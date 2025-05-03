@@ -3,9 +3,9 @@
 This package provides useful utilities for working with the DOM validation and
 sanitization.
 
-**Please note:** Some classes and functions in this package were copied from
-the deprecated `dart:html` package of the Dart SDK and are distributed under
-the following license:
+**Please note:** Some classes, functions and tests in this package were copied
+with modifications from the Dart SDK and are distributed under the following
+license:
 ```
 Copyright 2012, the Dart project authors.
 

@@ -12,11 +12,9 @@ import 'package:web/web.dart';
 /// Allows URIs to the same origin as the current application was loaded from
 /// (such as https://example.com:80).
 base class SameOriginUriPolicy implements UriPolicy {
-  /// @nodoc
   @internal
   final HTMLAnchorElement hiddenAnchor = HTMLAnchorElement();
 
-  /// @nodoc
   @internal
   final Location location = window.location;
 

@@ -39,7 +39,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
           // (i.e. previousSibling) is being spoofed, so double-check it.
           nextChild = child.previousSibling;
 
-          if (nextChild != null && nextChild.nextSibling != child) {
+          if (nextChild != null && nextChild.nextSibling.notEquals(child).toDart) {
             throw StateError('Corrupt HTML');
           }
         } catch (error) {

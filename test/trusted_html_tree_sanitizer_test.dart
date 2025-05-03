@@ -1,12 +1,6 @@
 // Copyright (c) 2013, the Dart project authors.  Please see the AUTHORS file
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
-//
-// This code was extracted from the HTML tests of the Dart SDK and migrated
-// to the `web` package.
-
-@TestOn('chrome')
-library;
 
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
@@ -34,17 +28,19 @@ void main() {
     setUp(makeDocumentFragmentAdoptionThrow);
     tearDown(restoreOldAdoptNode);
 
-    test('setInnerHtml', () {
-      document.body!.setInnerHtml('<div foo="baz">something</div>',
+    test('setInnerHTMLSafe', () {
+      document.body!.setInnerHTMLSafe('<div foo="baz">something</div>',
           treeSanitizer: NodeTreeSanitizer.trusted);
     });
 
-    test('appendHtml', () {
-      String oldStuff = document.body!.innerHtml;
+    test('appendHTMLSafe', () {
+      String oldStuff = document.body!.innerHTMLSafe;
       String newStuff = '<div rumplestiltskin="value">content</div>';
+
       document.body!
-          .appendHtml(newStuff, treeSanitizer: NodeTreeSanitizer.trusted);
-      expect(document.body!.innerHtml, oldStuff + newStuff);
+          .appendHTMLSafe(newStuff, treeSanitizer: NodeTreeSanitizer.trusted);
+
+      expect(document.body!.innerHTMLSafe, oldStuff + newStuff);
     });
   });
 
@@ -53,7 +49,7 @@ void main() {
     tearDown(restoreOldAdoptNode);
 
     test('untrusted', () {
-      expect(() => document.body!.innerHtml = '<p>anything</p>',
+      expect(() => document.body!.innerHTMLSafe = '<p>anything</p>',
           throwsA(anything));
     });
   });

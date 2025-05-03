@@ -45,18 +45,17 @@ base class NodeValidatorBuilder implements NodeValidator {
   /// * Inline-styles are not allowed.
   /// * Custom element tags are disallowed, use [allowCustomElement].
   /// * Custom tags extensions are disallowed, use [allowTagExtension].
-  /// * SVG Elements are not allowed, use [allowSvg].
+  /// * SVG Elements are not allowed, use [allowSVG].
   ///
   /// For scenarios where the HTML should only contain formatted text
   /// [allowTextElements] is more appropriate.
   ///
-  /// Use [allowSvg] to allow SVG elements.
+  /// Use [allowSVG] to allow SVG elements.
   NodeValidatorBuilder.common() {
     allowHTML5();
     allowTemplating();
   }
 
-  /// @nodoc
   @internal
   final List<NodeValidator> validators = <NodeValidator>[];
 
@@ -66,8 +65,7 @@ base class NodeValidatorBuilder implements NodeValidator {
   /// The UriPolicy can be used to restrict the locations the navigation elements
   /// are allowed to direct to. By default this will use the default [UriPolicy].
   void allowNavigation([UriPolicy? uriPolicy]) {
-    uriPolicy ??= UriPolicy();
-    add(SimpleNodeValidator.allowNavigation(uriPolicy));
+    add(SimpleNodeValidator.allowNavigation(uriPolicy ?? UriPolicy()));
   }
 
   /// Allows image elements.
@@ -75,8 +73,7 @@ base class NodeValidatorBuilder implements NodeValidator {
   /// The UriPolicy can be used to restrict the locations the images may be
   /// loaded from. By default this will use the default [UriPolicy].
   void allowImages([UriPolicy? uriPolicy]) {
-    uriPolicy ??= UriPolicy();
-    add(SimpleNodeValidator.allowImages(uriPolicy));
+    add(SimpleNodeValidator.allowImages(uriPolicy ?? UriPolicy()));
   }
 
   /// Allow basic text elements.
@@ -116,7 +113,8 @@ base class NodeValidatorBuilder implements NodeValidator {
       tagName = tagName.toUpperCase();
     }
 
-    add(SimpleNodeValidator(null, allowedAttributes: ['$tagName::style']));
+    add(SimpleNodeValidator(null,
+        allowedAttributes: <String>['$tagName::style']));
   }
 
   /// Allow common safe HTML5 elements and attributes.
@@ -131,7 +129,7 @@ base class NodeValidatorBuilder implements NodeValidator {
   }
 
   /// Allow SVG elements and attributes except for known bad ones.
-  void allowSvg() {
+  void allowSVG() {
     add(SVGNodeValidator());
   }
 
@@ -146,12 +144,12 @@ base class NodeValidatorBuilder implements NodeValidator {
     Iterable<String>? attributes,
     Iterable<String>? uriAttributes,
   }) {
-    var tagNameUpper = tagName.toUpperCase();
+    String tagNameUpper = tagName.toUpperCase();
 
-    var attrs = attributes
+    Iterable<String>? mappedAttributes = attributes
         ?.map<String>((name) => '$tagNameUpper::${name.toLowerCase()}');
 
-    var uriAttrs = uriAttributes
+    Iterable<String>? mappedUriAttributes = uriAttributes
         ?.map<String>((name) => '$tagNameUpper::${name.toLowerCase()}');
 
     uriPolicy ??= UriPolicy();
@@ -159,8 +157,8 @@ base class NodeValidatorBuilder implements NodeValidator {
     add(CustomElementNodeValidator(
       uriPolicy,
       <String>[tagNameUpper],
-      attrs,
-      uriAttrs,
+      mappedAttributes,
+      mappedUriAttributes,
       false,
       true,
     ));
@@ -179,22 +177,22 @@ base class NodeValidatorBuilder implements NodeValidator {
     Iterable<String>? attributes,
     Iterable<String>? uriAttributes,
   }) {
-    var baseNameUpper = baseName.toUpperCase();
-    var tagNameUpper = tagName.toUpperCase();
+    String baseNameUpper = baseName.toUpperCase();
+    String tagNameUpper = tagName.toUpperCase();
 
-    var attrs = attributes
+    Iterable<String>? mappedAttributes = attributes
         ?.map<String>((name) => '$baseNameUpper::${name.toLowerCase()}');
 
-    var uriAttrs = uriAttributes
+    Iterable<String>? mappedUriAttributes = uriAttributes
         ?.map<String>((name) => '$baseNameUpper::${name.toLowerCase()}');
 
     uriPolicy ??= UriPolicy();
 
     add(CustomElementNodeValidator(
       uriPolicy,
-      [tagNameUpper, baseNameUpper],
-      attrs,
-      uriAttrs,
+      <String>[tagNameUpper, baseNameUpper],
+      mappedAttributes,
+      mappedUriAttributes,
       true,
       false,
     ));

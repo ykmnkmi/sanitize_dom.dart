@@ -20,9 +20,7 @@ import 'package:web/web.dart';
 abstract interface class NodeTreeSanitizer {
   /// Constructs a default tree sanitizer which will remove all elements and
   /// attributes which are not allowed by the provided validator.
-  factory NodeTreeSanitizer(NodeValidator validator) {
-    return ValidatingTreeSanitizer(validator);
-  }
+  factory NodeTreeSanitizer(NodeValidator validator) = ValidatingTreeSanitizer;
 
   /// Called with the root of the tree which is to be sanitized.
   ///
