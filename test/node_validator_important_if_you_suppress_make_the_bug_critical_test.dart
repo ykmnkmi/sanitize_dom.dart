@@ -19,10 +19,10 @@ import 'utilities.dart';
 void validateHTML(String html, String reference, NodeValidator validator) {
   HTMLElement body = document.body!;
 
-  DocumentFragment a = body.createFragmentSafe(html, validator: validator);
+  DocumentFragment a = body.createFragment(html, validator: validator);
 
-  DocumentFragment b = body.createFragmentSafe(reference,
-      treeSanitizer: NodeTreeSanitizer.trusted);
+  DocumentFragment b =
+      body.createFragment(reference, treeSanitizer: NodeTreeSanitizer.trusted);
 
   // Prevent a false pass when both the html and the reference both get entirely
   // deleted, which is technically a match, but unlikely to be what we meant.
@@ -111,30 +111,30 @@ void main() {
           '<img src="http://example.com/foo"/></template>';
 
       DocumentFragment fragment =
-          document.body!.createFragmentSafe(html, validator: validator);
+          document.body!.createFragment(html, validator: validator);
 
       HTMLTemplateElement template = fragment.firstChild as HTMLTemplateElement;
 
       DocumentFragment expectedContent =
-          document.body!.createFragmentSafe('<div></div><img/>');
+          document.body!.createFragment('<div></div><img/>');
 
       validateNodeTree(template.content, expectedContent);
     });
 
     test('appendHTMLSafe is sanitized', () {
       String html = '<body background="s"></body><div></div>';
-      document.body!.appendHTMLSafe('<div id="stuff"></div>');
+      document.body!.appendHtml('<div id="stuff"></div>');
 
       Element stuff = document.querySelector('#stuff')!;
-      stuff.appendHTMLSafe(html);
+      stuff.appendHtml(html);
       expect(stuff.childNodes.length, equals(1));
       stuff.remove();
     });
 
     test('documentFragment.appendHTMLSafe is sanitized', () {
       String html = '<div id="things></div>';
-      DocumentFragment fragment = document.body!.createFragmentSafe(html);
-      fragment.appendHTMLSafe('<div id="bad"><script></script></div>');
+      DocumentFragment fragment = document.body!.createFragment(html);
+      fragment.appendHtml('<div id="bad"><script></script></div>');
       expect(fragment.childNodes.length, equals(1));
 
       Element child = fragment.firstChild as Element;
@@ -386,27 +386,26 @@ void main() {
 
     test('does not throw on valid syntax', () {
       expect(() {
-        document.body!.createFragmentSafe('<div></div>', validator: validator);
+        document.body!.createFragment('<div></div>', validator: validator);
       }, returnsNormally);
     });
 
     test('throws on invalid elements', () {
       expect(() {
-        document.body!.createFragmentSafe('<foo></foo>', validator: validator);
+        document.body!.createFragment('<foo></foo>', validator: validator);
       }, validationError);
     });
 
     test('throws on invalid attributes', () {
       expect(() {
         document.body!
-            .createFragmentSafe('<div foo="bar"></div>', validator: validator);
+            .createFragment('<div foo="bar"></div>', validator: validator);
       }, validationError);
     });
 
     test('throws on invalid attribute values', () {
       expect(() {
-        document.body!.createFragmentSafe(
-            '<img src="http://example.com/foo.jpg"/>',
+        document.body!.createFragment('<img src="http://example.com/foo.jpg"/>',
             validator: validator);
       }, validationError);
     });
@@ -419,7 +418,7 @@ void main() {
           '<image xlink:href="foo" data-foo="bar"/>'
           '</svg>';
 
-      DocumentFragment fragment = SVGSVGElement().createFragmentSafe(svgText);
+      DocumentFragment fragment = SVGSVGElement().createFragment(svgText);
       Element element = fragment.firstChild as Element;
       expect(element.isA<SVGSVGElement>(), isTrue);
       expect(element.children.item(0).isA<SVGImageElement>(), isTrue);
@@ -476,7 +475,7 @@ void main() {
         '');
 
     test('tagName makes containing form invalid', () {
-      DocumentFragment fragment = document.body!.createFragmentSafe(
+      DocumentFragment fragment = document.body!.createFragment(
           "<form onmouseover='alert(2)'><input name='tagName'>",
           validator: validator);
 
@@ -493,9 +492,8 @@ void main() {
     });
 
     test('tagName without mouseover', () {
-      DocumentFragment fragment = document.body!.createFragmentSafe(
-          "<form><input name='tagName'>",
-          validator: validator);
+      DocumentFragment fragment = document.body!
+          .createFragment("<form><input name='tagName'>", validator: validator);
 
       HTMLFormElement? form = fragment.lastChild as HTMLFormElement?;
 

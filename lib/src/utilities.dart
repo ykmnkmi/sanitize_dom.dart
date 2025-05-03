@@ -9,9 +9,6 @@ import 'dart:js_interop';
 
 import 'package:web/web.dart';
 
-const bool assertionsEnabled =
-    bool.fromEnvironment('dart.web.assertions_enabled');
-
 @JS('Function')
 external JSFunction createFunction0(String body);
 

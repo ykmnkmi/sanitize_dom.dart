@@ -47,22 +47,22 @@ Range? _parseRange;
 
 extension SafeElement on Element {
   @JS('innerHTML')
-  external String get innerHTMLSafe;
+  external String get innerHtml;
 
-  set innerHTMLSafe(String html) {
-    setInnerHTMLSafe(html);
+  set innerHtml(String html) {
+    setInnerHtml(html);
   }
 
-  void appendHTMLSafe(
+  void appendHtml(
     String text, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
   }) {
-    insertAdjacentHTMLSafe('beforeend', text,
+    insertAdjacentHtml('beforeend', text,
         validator: validator, treeSanitizer: treeSanitizer);
   }
 
-  DocumentFragment createFragmentSafe(
+  DocumentFragment createFragment(
     String html, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
@@ -74,6 +74,8 @@ extension SafeElement on Element {
       throw ArgumentError(
           'validator can only be oassed if treeSanitizer is null');
     }
+
+    // TODO(ykmnkmi): Switch to DOMParser
 
     Document parseDocument;
     Range parseRange;
@@ -135,7 +137,7 @@ extension SafeElement on Element {
     return fragment;
   }
 
-  void insertAdjacentHTMLSafe(
+  void insertAdjacentHtml(
     String where,
     String html, {
     NodeValidator? validator,
@@ -144,7 +146,7 @@ extension SafeElement on Element {
     if (treeSanitizer is TrustedHTMLTreeSanitizer) {
       insertAdjacentHTML(where, html.toJS);
     } else {
-      DocumentFragment fragment = createFragmentSafe(html,
+      DocumentFragment fragment = createFragment(html,
           validator: validator, treeSanitizer: treeSanitizer);
 
       switch (where.toLowerCase()) {
@@ -171,7 +173,7 @@ extension SafeElement on Element {
     }
   }
 
-  void setInnerHTMLSafe(
+  void setInnerHtml(
     String html, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
@@ -181,33 +183,33 @@ extension SafeElement on Element {
     if (treeSanitizer is TrustedHTMLTreeSanitizer) {
       innerHTML = html.toJS;
     } else {
-      append(createFragmentSafe(html,
+      append(createFragment(html,
           validator: validator, treeSanitizer: treeSanitizer));
     }
   }
 }
 
 extension SafeDocumentFragment on DocumentFragment {
-  String get innerHTMLSafe {
+  String get innerHtml {
     HTMLDivElement div = document.createElement('div') as HTMLDivElement;
     div.append(cloneNode(true));
-    return div.innerHTMLSafe;
+    return div.innerHtml;
   }
 
-  set innerHTMLSafe(String value) {
-    setInnerHTMLSafe(value);
+  set innerHtml(String value) {
+    setInnerHtml(value);
   }
 
-  void appendHTMLSafe(
+  void appendHtml(
     String text, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
   }) {
-    append(document.body!.createFragmentSafe(text,
+    append(document.body!.createFragment(text,
         validator: validator, treeSanitizer: treeSanitizer));
   }
 
-  void setInnerHTMLSafe(
+  void setInnerHtml(
     String html, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
@@ -216,13 +218,13 @@ extension SafeDocumentFragment on DocumentFragment {
       removeChild(firstChild!);
     }
 
-    append(document.body!.createFragmentSafe(html,
+    append(document.body!.createFragment(html,
         validator: validator, treeSanitizer: treeSanitizer));
   }
 }
 
 extension SafeSVGElement on SVGElement {
-  DocumentFragment createFragmentSafe(
+  DocumentFragment createFragment(
     String? svg, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
@@ -236,7 +238,7 @@ extension SafeSVGElement on SVGElement {
     String html = '<svg version="1.1">$svg</svg>';
 
     DocumentFragment fragment =
-        document.body!.createFragmentSafe(html, treeSanitizer: treeSanitizer);
+        document.body!.createFragment(html, treeSanitizer: treeSanitizer);
 
     DocumentFragment svgFragment = DocumentFragment();
 
@@ -252,7 +254,7 @@ extension SafeSVGElement on SVGElement {
 }
 
 extension SafeHTMLTemplateElement on HTMLTemplateElement {
-  void setInnerHTMLSafe(
+  void setInnerHtml(
     String html, {
     NodeValidator? validator,
     NodeTreeSanitizer? treeSanitizer,
@@ -263,7 +265,7 @@ extension SafeHTMLTemplateElement on HTMLTemplateElement {
       removeChild(firstChild!);
     }
 
-    DocumentFragment fragment = createFragmentSafe(html,
+    DocumentFragment fragment = createFragment(html,
         validator: validator, treeSanitizer: treeSanitizer);
 
     content.append(fragment);

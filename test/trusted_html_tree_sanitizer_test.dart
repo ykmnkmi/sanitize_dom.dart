@@ -29,18 +29,18 @@ void main() {
     tearDown(restoreOldAdoptNode);
 
     test('setInnerHTMLSafe', () {
-      document.body!.setInnerHTMLSafe('<div foo="baz">something</div>',
+      document.body!.setInnerHtml('<div foo="baz">something</div>',
           treeSanitizer: NodeTreeSanitizer.trusted);
     });
 
     test('appendHTMLSafe', () {
-      String oldStuff = document.body!.innerHTMLSafe;
+      String oldStuff = document.body!.innerHtml;
       String newStuff = '<div rumplestiltskin="value">content</div>';
 
       document.body!
-          .appendHTMLSafe(newStuff, treeSanitizer: NodeTreeSanitizer.trusted);
+          .appendHtml(newStuff, treeSanitizer: NodeTreeSanitizer.trusted);
 
-      expect(document.body!.innerHTMLSafe, oldStuff + newStuff);
+      expect(document.body!.innerHtml, oldStuff + newStuff);
     });
   });
 
@@ -49,7 +49,7 @@ void main() {
     tearDown(restoreOldAdoptNode);
 
     test('untrusted', () {
-      expect(() => document.body!.innerHTMLSafe = '<p>anything</p>',
+      expect(() => document.body!.innerHtml = '<p>anything</p>',
           throwsA(anything));
     });
   });

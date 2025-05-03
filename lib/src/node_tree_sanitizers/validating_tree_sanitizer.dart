@@ -8,6 +8,7 @@
 import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
+import 'package:sanitize_dom/src/constants.dart';
 import 'package:sanitize_dom/src/node_tree_sanitizer.dart';
 import 'package:sanitize_dom/src/node_validator.dart';
 import 'package:sanitize_dom/src/utilities.dart';
@@ -140,7 +141,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
       // Unexpected exception sanitizing -> remove
       removeNode(element, parent);
 
-      if (assertionsEnabled) {
+      if (assertionsEnabled || warnOnRemove) {
         // ignore: avoid_print
         print('Removing corrupted element $elementText');
       }
@@ -162,7 +163,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
     if (false != corrupted) {
       removeNode(element, parent);
 
-      if (assertionsEnabled) {
+      if (assertionsEnabled || warnOnRemove) {
         // ignore: avoid_print
         print('Removing element due to corrupted attributes on <$text>');
       }
@@ -173,7 +174,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
     if (!validator.allowsElement(element)) {
       removeNode(element, parent);
 
-      if (assertionsEnabled) {
+      if (assertionsEnabled || warnOnRemove) {
         // ignore: avoid_print
         print('Removing disallowed element <$tag> from $parent');
       }
@@ -185,7 +186,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
       if (!validator.allowsAttribute(element, 'is', isAttribute)) {
         removeNode(element, parent);
 
-        if (assertionsEnabled) {
+        if (assertionsEnabled || warnOnRemove) {
           // ignore: avoid_print
           print('Removing disallowed type extension <$tag is="$isAttribute">');
         }
@@ -204,7 +205,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
       String value = attribute.value;
 
       if (!validator.allowsAttribute(element, name.toLowerCase(), value)) {
-        if (assertionsEnabled) {
+        if (assertionsEnabled || warnOnRemove) {
           // ignore: avoid_print
           print('Removing disallowed attribute <$tag $name="$value">');
         }
