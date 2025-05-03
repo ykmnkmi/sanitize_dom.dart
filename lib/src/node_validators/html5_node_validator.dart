@@ -131,7 +131,8 @@ class HTML5NodeValidator implements NodeValidator {
     'WBR',
   };
 
-  static const List<String> _standardAttributes = <String>[
+  @internal
+  static const List<String> standardAttributes = <String>[
     '*::class',
     '*::dir',
     '*::draggable',
@@ -423,7 +424,7 @@ class HTML5NodeValidator implements NodeValidator {
   HTML5NodeValidator({UriPolicy? uriPolicy})
       : uriPolicy = uriPolicy ?? UriPolicy() {
     if (attributeValidators.isEmpty) {
-      for (String attribute in _standardAttributes) {
+      for (String attribute in standardAttributes) {
         attributeValidators[attribute] = standardAttributeValidator;
       }
 
