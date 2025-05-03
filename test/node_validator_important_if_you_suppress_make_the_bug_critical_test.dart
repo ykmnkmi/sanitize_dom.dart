@@ -17,12 +17,11 @@ import 'package:web/web.dart';
 import 'utilities.dart';
 
 void validateHTML(String html, String reference, NodeValidator validator) {
-  HTMLElement body = document.body!;
+  DocumentFragment a =
+      document.body!.createFragment(html, validator: validator);
 
-  DocumentFragment a = body.createFragment(html, validator: validator);
-
-  DocumentFragment b =
-      body.createFragment(reference, treeSanitizer: NodeTreeSanitizer.trusted);
+  DocumentFragment b = document.body!
+      .createFragment(reference, treeSanitizer: NodeTreeSanitizer.trusted);
 
   // Prevent a false pass when both the html and the reference both get entirely
   // deleted, which is technically a match, but unlikely to be what we meant.
