@@ -39,7 +39,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
           // (i.e. previousSibling) is being spoofed, so double-check it.
           nextChild = child.previousSibling;
 
-          if (nextChild != null && nextChild.nextSibling.notEquals(child).toDart) {
+          if (nextChild != null && nextChild.nextSibling != child) {
             throw StateError('Corrupt HTML');
           }
         } catch (error) {
@@ -88,7 +88,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
   /// Sanitize the element, assuming we can't trust anything about it.
   @internal
   void sanitizeUntrustedElement(Element element, Node? parent) {
-    // If the _hasCorruptedAttributes does not successfully return false,
+    // If the hasCorruptedAttributes does not successfully return false,
     // then we consider it corrupted and remove.
     // TODO(alanknight): This is a workaround because on Firefox
     //  embed/object tags typeof is "function", not "object". We don't recognize
@@ -119,7 +119,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
     String elementText = 'element unprintable';
 
     try {
-      elementText = element.toString();
+      elementText = element.localName;
     } catch (_) {}
 
     try {
@@ -134,7 +134,7 @@ base class ValidatingTreeSanitizer implements NodeTreeSanitizer {
         isAttribute,
       );
     } on ArgumentError {
-      // Thrown by _ThrowsNodeValidator
+      // Thrown by ThrowsNodeValidator
       rethrow;
     } catch (_) {
       // Unexpected exception sanitizing -> remove

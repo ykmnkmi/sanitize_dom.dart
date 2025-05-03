@@ -326,10 +326,14 @@ void main() {
     testHTML(
         'blocks script elements but allows other',
         validator,
-        '<svg xmlns="http://www.w3.org/2000/svg>'
+        // original line
+        // '<svg xmlns="http://www.w3.org/2000/svg>'
+        '<svg xmlns="http://www.w3.org/2000/svg">'
             '<script></script><ellipse cx="200" cy="80" rx="100" ry="50">'
             '</ellipse></svg>',
-        '<svg xmlns="http://www.w3.org/2000/svg><ellipse cx="200" cy="80" '
+        // original line
+        // '<svg xmlns="http://www.w3.org/2000/svg><ellipse cx="200" cy="80" '
+        '<svg xmlns="http://www.w3.org/2000/svg"><ellipse cx="200" cy="80" '
             'rx="100" ry="50"></ellipse></svg>');
 
     testHTML(

@@ -2,7 +2,7 @@ name: sanitize_dom
 description: >
   This package provides useful utilities for working with the DOM
   validation and sanitization.
-version: 0.0.4
+version: 0.0.5
 repository: https://github.com/ykmnkmi/sanitize_dom.dart
 issue_tracker: https://github.com/ykmnkmi/sanitize_dom.dart/issues
 

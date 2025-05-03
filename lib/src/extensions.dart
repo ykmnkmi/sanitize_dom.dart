@@ -194,6 +194,10 @@ extension SafeDocumentFragment on DocumentFragment {
     return div.innerHTMLSafe;
   }
 
+  set innerHTMLSafe(String value) {
+    setInnerHTMLSafe(value);
+  }
+
   void appendHTMLSafe(
     String text, {
     NodeValidator? validator,
